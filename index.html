@@ -3,318 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kampanye Zero Titip Absen | UNNES</title>
+    <title>Kampanye Zero Titip Absen UNNES</title>
     <style>
-        /* --- TEMA WARNA HIJAU SOFT --- */
+        /* --- TEMA WARNA HIJAU SOFT ELEGAN --- */
         :root {
-            --primary-green: #4caf50;
-            --dark-green: #2e7d32;
-            --soft-green: #e8f5e9;
-            --accent-green: #a5d6a7;
+            --bg-color: #f4fbf4;
+            --primary-green: #66bb6a;
+            --hover-green: #43a047;
+            --card-bg: #ffffff;
             --text-dark: #1b5e20;
-            --text-light: #333;
-            --white: #ffffff;
+            --text-muted: #555555;
+            --shadow: 0 8px 20px rgba(76, 175, 80, 0.08);
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--white);
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        /* --- NAVIGASI --- */
-        nav {
-            background-color: var(--white);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--dark-green);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--text-light);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary-green);
-        }
-
-        /* --- SECTIONS UMUM --- */
-        section {
-            padding: 100px 5% 60px;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
         }
 
-        h1, h2, h3 {
-            color: var(--dark-green);
-            margin-bottom: 20px;
-        }
-
-        /* --- BERANDA --- */
-        #beranda {
-            background-color: var(--soft-green);
+        /* --- HEADER --- */
+        header {
             text-align: center;
-            align-items: center;
-        }
-
-        #beranda h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        #beranda p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin-bottom: 2rem;
-            color: var(--text-dark);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: var(--primary-green);
-            color: var(--white);
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: background 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: var(--dark-green);
-        }
-
-        /* --- LATAR BELAKANG --- */
-        .card-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            flex: 1;
-            min-width: 300px;
-            border-left: 5px solid var(--accent-green);
-        }
-
-        /* --- LANGKAH NYATA --- */
-        #langkah-nyata {
-            background-color: var(--soft-green);
-        }
-
-        .step-list {
-            list-style: none;
-        }
-
-        .step-list li {
-            background: var(--white);
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            display: flex;
-            align-items: center;
-        }
-
-        .step-list li::before {
-            content: '✓';
-            color: var(--primary-green);
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-
-        /* --- LOGIN / DAFTAR --- */
-        .form-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: var(--white);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px 20px 20px;
             width: 100%;
         }
 
-        .form-group {
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- MAIN CONTAINER --- */
+        main {
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* --- GRID MENU UTAMA --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-green);
+            box-shadow: 0 12px 25px rgba(76, 175, 80, 0.15);
+        }
+
+        .menu-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .menu-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        /* --- KONTEN DETAIL (Disembunyikan di awal) --- */
+        .content-section {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section h2 {
             margin-bottom: 20px;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .content-section p {
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background-color: #ccc;
+        }
+
+        /* --- FORM STYLING --- */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-dark);
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #c8e6c9;
             border-radius: 8px;
+            background-color: #f9fdf9;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus {
             border-color: var(--primary-green);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
         }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: var(--dark-green);
-            color: var(--white);
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
         }
 
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none; /* Bisa dikembangkan jadi menu hamburger nanti */
-            }
+        .btn-submit:hover {
+            background-color: var(--hover-green);
         }
+
+        ul.styled-list {
+            list-style: none;
+        }
+        
+        ul.styled-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        ul.styled-list li::before {
+            content: '🌱';
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">ZeroTitipAbsen</div>
-        <ul>
-            <li><a href="#beranda">Beranda</a></li>
-            <li><a href="#latar-belakang">Analisis Masalah</a></li>
-            <li><a href="#langkah-nyata">Langkah Nyata</a></li>
-            <li><a href="#gabung">Gabung Kampanye</a></li>
-        </ul>
-    </nav>
+    <header>
+        <h1>Zero Titip Absen</h1>
+        <p>Inisiatif Integritas Akademik Kampus UNNES</p>
+    </header>
 
-    <section id="beranda">
-        <h1>Wujudkan Kampus Berintegritas!</h1>
-        <p>Integritas akademik adalah fondasi utama karakter mahasiswa. Mari bersama-sama putus rantai budaya titip absen di lingkungan universitas dan ciptakan ekosistem belajar yang jujur.</p>
-        <a href="#gabung" class="btn">Dukung Kampanye Ini</a>
-    </section>
-
-    <section id="latar-belakang">
-        <h2>Mengapa Budaya Titip Absen Terjadi?</h2>
-        <p>Berdasarkan hasil wawancara dan temuan di lapangan, praktik ini masih marak terjadi karena adanya celah dalam sistem pengawasan kehadiran.</p>
-        
-        <div class="card-container">
-            <div class="card">
-                <h3>Sistem Presensi Kurang Efektif</h3>
-                <p>Metode presensi satu arah, di mana dosen hanya memanggil nama, memberikan peluang besar bagi mahasiswa untuk melakukan kecurangan tanpa pengawasan ketat.</p>
+    <main>
+        <div id="mainMenu" class="menu-grid">
+            <div class="menu-card" onclick="showSection('loginSection')">
+                <div class="menu-icon">📝</div>
+                <h3>Daftar & Komitmen</h3>
             </div>
-            <div class="card">
-                <h3>Mudah Dimanipulasi</h3>
-                <p>Ketidakadaan validasi visual atau sistem pendukung lainnya membuat mahasiswa merasa aman saat menitipkan kehadirannya kepada teman.</p>
+            <div class="menu-card" onclick="showSection('alasanSection')">
+                <div class="menu-icon">🔍</div>
+                <h3>Kenapa Ini Terjadi?</h3>
             </div>
-            <div class="card">
-                <h3>Dianggap Lumrah</h3>
-                <p>Karena sering terjadi dan minimnya sanksi tegas yang terlihat, tindakan tidak terpuji ini perlahan bergeser menjadi "hal yang biasa" di kalangan mahasiswa.</p>
+            <div class="menu-card" onclick="showSection('langkahSection')">
+                <div class="menu-icon">🛡️</div>
+                <h3>Langkah Pencegahan</h3>
+            </div>
+            <div class="menu-card" onclick="showSection('ideSection')">
+                <div class="menu-icon">💡</div>
+                <h3>Kirim Ide Kamu</h3>
             </div>
         </div>
-    </section>
 
-    <section id="langkah-nyata">
-        <h2>Langkah Nyata yang Bisa Dilakukan</h2>
-        <p>Proyek ini bertujuan untuk membawa perubahan melalui langkah-langkah konkret:</p>
-        <br>
-        <ul class="step-list">
-            <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Mengajak mahasiswa menyadari pentingnya kehadiran fisik dan kejujuran dalam menuntut ilmu.</li>
-            <li><strong>Edukasi Sanksi & Dampak:</strong> Memberikan pemahaman mendalam mengenai sanksi akademik dan dampak jangka panjang dari hilangnya integritas diri.</li>
-            <li><strong>Menciptakan Budaya Malu:</strong> Membangun lingkungan sosial kampus di mana mahasiswa merasa malu untuk melakukan atau membantu praktik titip absen.</li>
-            <li><strong>Inovasi Sistem (Usulan):</strong> Mendorong pihak fakultas untuk menerapkan sistem presensi berbasis teknologi yang memerlukan validasi visual atau biometrik.</li>
-        </ul>
-    </section>
-
-    <section id="gabung">
-        <div class="form-container">
-            <h2 style="text-align: center;">Komitmen Zero Titip Absen</h2>
-            <p style="text-align: center; margin-bottom: 20px;">Daftarkan dirimu sebagai bagian dari pergerakan integritas akademik!</p>
-            
-            <form id="kampanyeForm" onsubmit="submitForm(event)">
+        <div id="loginSection" class="content-section">
+            <h2>Daftar & Beri Komitmen</h2>
+            <p>Jadilah agen perubahan. Daftarkan dirimu sebagai mahasiswa yang berkomitmen menolak budaya titip absen.</p>
+            <form onsubmit="alert('Terima kasih atas komitmenmu!'); goHome(); return false;">
                 <div class="form-group">
-                    <label for="nama">Nama Lengkap</label>
-                    <input type="text" id="nama" placeholder="Masukkan nama lengkapmu" required>
+                    <label>Nama Lengkap</label>
+                    <input type="text" placeholder="Masukkan nama lengkap" required>
                 </div>
                 <div class="form-group">
-                    <label for="nim">NIM</label>
-                    <input type="text" id="nim" placeholder="Contoh: 2504130074" required>
+                    <label>NIM</label>
+                    <input type="text" placeholder="Contoh: 2504130074" required>
                 </div>
                 <div class="form-group">
-                    <label for="jurusan">Jurusan / Program Studi</label>
-                    <input type="text" id="jurusan" placeholder="Contoh: Ilmu Komputer" required>
+                    <label>Jurusan / Program Studi</label>
+                    <input type="text" placeholder="Contoh: Ilmu Komputer" required>
                 </div>
                 <div class="form-group">
-                    <label for="angkatan">Angkatan</label>
-                    <select id="angkatan" required>
-                        <option value="" disabled selected>Pilih Tahun Angkatan</option>
+                    <label>Angkatan</label>
+                    <select required>
+                        <option value="" disabled selected>Pilih Angkatan</option>
                         <option value="2026">2026</option>
                         <option value="2025">2025</option>
                         <option value="2024">2024</option>
                         <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Kirim Komitmen Saya</button>
+                <button type="submit" class="btn-submit">Kirim Komitmen</button>
             </form>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2026 Kampanye Zero Titip Absen. Dibangun untuk Integritas Akademik UNNES.</p>
-    </footer>
+        <div id="alasanSection" class="content-section">
+            <h2>Akar Masalah Budaya Titip Absen</h2>
+            <p>Temuan di lapangan menunjukkan bahwa sistem presensi konvensional satu arah—di mana dosen hanya memanggil nama—memberikan celah yang signifikan bagi mahasiswa untuk melakukan kecurangan. Tanpa pengawasan yang ketat, terutama di kelas dengan jumlah mahasiswa yang banyak, dosen kesulitan untuk mengenali wajah setiap individu secara pasti.</p>
+            <p>Kondisi ini diperparah oleh ketidakhadiran validasi visual, biometrik, atau sistem pendukung berbasis teknologi lainnya. Akibatnya, mahasiswa merasa bahwa menitipkan absen adalah tindakan yang aman dan minim risiko. Praktik manipulasi ini secara bertahap kehilangan stigma negatifnya dan justru mulai dianggap sebagai bentuk "solidaritas" atau hal yang lumrah di kalangan mahasiswa, yang pada akhirnya mengikis nilai integritas akademik yang sebenarnya.</p>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="langkahSection" class="content-section">
+            <h2>Langkah Nyata Mencegah Titip Absen</h2>
+            <ul class="styled-list">
+                <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Membangun pemahaman bahwa kehadiran fisik bukan sekadar kewajiban administratif, melainkan bentuk tanggung jawab terhadap ilmu yang dipelajari.</li>
+                <li><strong>Edukasi Dampak Jangka Panjang:</strong> Menyadarkan mahasiswa bahwa ketidakjujuran kecil di kampus dapat membentuk karakter koruptif di dunia kerja nanti.</li>
+                <li><strong>Menciptakan Budaya Malu:</strong> Mengubah narasi "solidaritas teman" menjadi "merugikan teman", sehingga pelaku merasa malu untuk meminta atau memberikan bantuan titip absen.</li>
+                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan kepada fakultas untuk menggunakan absensi berbasis QR Code dinamis yang terikat pada lokasi (GPS) atau validasi berbasis perangkat.</li>
+            </ul>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="ideSection" class="content-section">
+            <h2>Punya Ide Brilian?</h2>
+            <p>Punya saran sistem presensi baru atau cara kampanye yang lebih asik? Sampaikan idemu di sini!</p>
+            <form onsubmit="alert('Ide kamu berhasil dikirim! Terima kasih.'); goHome(); return false;">
+                <div class="form-group">
+                    <label>Nama (Boleh Inisial/Anonim)</label>
+                    <input type="text" placeholder="Nama kamu">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Ide / Solusi</label>
+                    <textarea rows="5" placeholder="Tuliskan idemu untuk mencegah titip absen di sini..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Ide</button>
+            </form>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+    </main>
 
     <script>
-        // Fungsi sederhana untuk menangani submit form
-        function submitForm(event) {
-            event.preventDefault(); // Mencegah halaman reload
+        // Fungsi untuk menampilkan section tertentu dan menyembunyikan menu utama
+        function showSection(sectionId) {
+            // Sembunyikan menu grid
+            document.getElementById('mainMenu').style.display = 'none';
             
-            // Mengambil nilai dari input
-            const nama = document.getElementById('nama').value;
-            const jurusan = document.getElementById('jurusan').value;
+            // Sembunyikan semua section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.style.display = 'none');
             
-            // Menampilkan alert terima kasih
-            alert(`Terima kasih ${nama} dari jurusan ${jurusan}! Komitmenmu untuk Zero Titip Absen telah dicatat. Mari bersama wujudkan kampus berintegritas!`);
+            // Tampilkan section yang dituju
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Fungsi untuk kembali ke menu utama
+        function goHome() {
+            // Sembunyikan semua section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.style.display = 'none');
             
-            // Reset form setelah disubmit
-            document.getElementById('kampanyeForm').reset();
+            // Tampilkan kembali menu grid
+            document.getElementById('mainMenu').style.display = 'grid';
         }
     </script>
 </body>
