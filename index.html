@@ -94,7 +94,7 @@
             color: var(--text-dark);
         }
 
-        /* --- KONTEN DETAIL (Disembunyikan di awal) --- */
+        /* --- KONTEN DETAIL --- */
         .content-section {
             display: none;
             background-color: var(--card-bg);
@@ -207,6 +207,34 @@
             top: 2px;
         }
 
+        /* --- PRESENSI CAMERA CONTAINER --- */
+        .camera-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f1f8e9;
+            border-radius: 12px;
+            border: 1px dashed var(--primary-green);
+        }
+
+        #kamera, #kanvasFoto {
+            border-radius: 12px;
+            max-width: 100%;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .status-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -224,7 +252,7 @@
             </div>
             <div class="menu-card" onclick="showSection('alasanSection')">
                 <div class="menu-icon">🔍</div>
-                <h3>Kenapa Ini Terjadi?</h3>
+                <h3>Akar Masalah</h3>
             </div>
             <div class="menu-card" onclick="showSection('langkahSection')">
                 <div class="menu-icon">🛡️</div>
@@ -234,6 +262,10 @@
                 <div class="menu-icon">💡</div>
                 <h3>Kirim Ide Kamu</h3>
             </div>
+            <div class="menu-card" onclick="showSection('presensiSection'); startCamera()">
+                <div class="menu-icon">📸</div>
+                <h3>Coba Presensi Aman</h3>
+            </div>
         </div>
 
         <div id="loginSection" class="content-section">
@@ -242,7 +274,7 @@
             <form onsubmit="alert('Terima kasih atas komitmenmu!'); goHome(); return false;">
                 <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" placeholder="Masukkan nama lengkap" required>
+                    <input type="text" placeholder="Contoh: Marco Van Basten Simanjuntak" required>
                 </div>
                 <div class="form-group">
                     <label>NIM</label>
@@ -280,7 +312,7 @@
                 <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Membangun pemahaman bahwa kehadiran fisik bukan sekadar kewajiban administratif, melainkan bentuk tanggung jawab terhadap ilmu yang dipelajari.</li>
                 <li><strong>Edukasi Dampak Jangka Panjang:</strong> Menyadarkan mahasiswa bahwa ketidakjujuran kecil di kampus dapat membentuk karakter koruptif di dunia kerja nanti.</li>
                 <li><strong>Menciptakan Budaya Malu:</strong> Mengubah narasi "solidaritas teman" menjadi "merugikan teman", sehingga pelaku merasa malu untuk meminta atau memberikan bantuan titip absen.</li>
-                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan kepada fakultas untuk menggunakan absensi berbasis QR Code dinamis yang terikat pada lokasi (GPS) atau validasi berbasis perangkat.</li>
+                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan kepada fakultas untuk menggunakan absensi berbasis validasi visual (Live Selfie) dan pembatasan lokasi (GPS Geofencing).</li>
             </ul>
             <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
@@ -301,30 +333,119 @@
             </form>
             <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
+
+        <div id="presensiSection" class="content-section">
+            <h2>Prototipe Presensi Cerdas</h2>
+            <p>Fitur ini mensimulasikan validasi keamanan ganda: <strong>Pendeteksian Wajah (Live Camera)</strong> dan <strong>Validasi Area Kampus (GPS Geofencing)</strong>.</p>
+            
+            <div class="camera-container" id="kameraContainer">
+                <video id="kamera" autoplay playsinline></video>
+                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="ambilFoto()">📸 Rekam Kehadiran</button>
+            </div>
+
+            <div id="hasilFotoContainer" class="camera-container" style="display: none;">
+                <h3 style="margin-bottom: 15px; color: var(--text-dark);">Hasil Validasi Kehadiran:</h3>
+                <canvas id="kanvasFoto"></canvas>
+                <div id="statusLokasi" class="status-box"></div>
+                <button type="button" class="btn-submit" style="background-color: #757575; width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
+            </div>
+
+            <button class="btn-back" onclick="stopCamera(); goHome()">⬅ Kembali</button>
+        </div>
     </main>
 
     <script>
-        // Fungsi untuk menampilkan section tertentu dan menyembunyikan menu utama
+        let videoStream;
+
+        // Fungsi Navigasi Tampilan
         function showSection(sectionId) {
-            // Sembunyikan menu grid
             document.getElementById('mainMenu').style.display = 'none';
-            
-            // Sembunyikan semua section
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(sec => sec.style.display = 'none');
-            
-            // Tampilkan section yang dituju
             document.getElementById(sectionId).style.display = 'block';
         }
 
-        // Fungsi untuk kembali ke menu utama
         function goHome() {
-            // Sembunyikan semua section
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(sec => sec.style.display = 'none');
-            
-            // Tampilkan kembali menu grid
             document.getElementById('mainMenu').style.display = 'grid';
+        }
+
+        // Fungsi Kamera Live
+        function startCamera() {
+            const video = document.getElementById('kamera');
+            document.getElementById('kameraContainer').style.display = 'flex';
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    alert("Akses kamera diperlukan untuk fitur presensi ini.");
+                });
+            } else {
+                alert("Browser kamu tidak mendukung akses kamera.");
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function resetKamera() {
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+            document.getElementById('kameraContainer').style.display = 'flex';
+        }
+
+        // Fungsi Jepret Foto & Cek GPS
+        function ambilFoto() {
+            const video = document.getElementById('kamera');
+            const canvas = document.getElementById('kanvasFoto');
+            const context = canvas.getContext('2d');
+            
+            // Sembunyikan video live, tampilkan kanvas hasil
+            document.getElementById('kameraContainer').style.display = 'none';
+            document.getElementById('hasilFotoContainer').style.display = 'flex';
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const statusBox = document.getElementById('statusLokasi');
+            statusBox.innerHTML = "Mengecek koordinat lokasi kampus...";
+            statusBox.style.backgroundColor = "#fff3e0";
+            statusBox.style.color = "#e65100";
+
+            // Cek Lokasi Geolocation (Simulasi Geofencing)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        // Simulasi keberhasilan login GPS
+                        statusBox.style.backgroundColor = "#e8f5e9";
+                        statusBox.style.color = "var(--text-dark)";
+                        statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
+                                               <span style="font-size: 0.9em; font-weight: normal;">Lokasi GPS: ${lat.toFixed(4)}, ${lon.toFixed(4)}<br>
+                                               Status: Di dalam area FMIPA</span>`;
+                    },
+                    (error) => {
+                        statusBox.style.backgroundColor = "#ffebee";
+                        statusBox.style.color = "#c62828";
+                        statusBox.innerHTML = "❌ <strong>Presensi Gagal!</strong><br>Tidak bisa mendeteksi lokasi atau kamu berada di luar radius area kampus.";
+                    },
+                    { enableHighAccuracy: true, timeout: 5000 }
+                );
+            } else {
+                statusBox.innerHTML = "Browser tidak mendukung pendeteksian lokasi.";
+            }
         }
     </script>
 </body>
