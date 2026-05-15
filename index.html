@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kampanye Zero Titip Absen | UNNES</title>
+    <style>
+        /* --- TEMA WARNA HIJAU SOFT --- */
+        :root {
+            --primary-green: #4caf50;
+            --dark-green: #2e7d32;
+            --soft-green: #e8f5e9;
+            --accent-green: #a5d6a7;
+            --text-dark: #1b5e20;
+            --text-light: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGASI --- */
+        nav {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-green);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-green);
+        }
+
+        /* --- SECTIONS UMUM --- */
+        section {
+            padding: 100px 5% 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1, h2, h3 {
+            color: var(--dark-green);
+            margin-bottom: 20px;
+        }
+
+        /* --- BERANDA --- */
+        #beranda {
+            background-color: var(--soft-green);
+            text-align: center;
+            align-items: center;
+        }
+
+        #beranda h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #beranda p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-green);
+        }
+
+        /* --- LATAR BELAKANG --- */
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            flex: 1;
+            min-width: 300px;
+            border-left: 5px solid var(--accent-green);
+        }
+
+        /* --- LANGKAH NYATA --- */
+        #langkah-nyata {
+            background-color: var(--soft-green);
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-list li {
+            background: var(--white);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            display: flex;
+            align-items: center;
+        }
+
+        .step-list li::before {
+            content: '✓';
+            color: var(--primary-green);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        /* --- LOGIN / DAFTAR --- */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--dark-green);
+            color: var(--white);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none; /* Bisa dikembangkan jadi menu hamburger nanti */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ZeroTitipAbsen</div>
+        <ul>
+            <li><a href="#beranda">Beranda</a></li>
+            <li><a href="#latar-belakang">Analisis Masalah</a></li>
+            <li><a href="#langkah-nyata">Langkah Nyata</a></li>
+            <li><a href="#gabung">Gabung Kampanye</a></li>
+        </ul>
+    </nav>
+
+    <section id="beranda">
+        <h1>Wujudkan Kampus Berintegritas!</h1>
+        <p>Integritas akademik adalah fondasi utama karakter mahasiswa. Mari bersama-sama putus rantai budaya titip absen di lingkungan universitas dan ciptakan ekosistem belajar yang jujur.</p>
+        <a href="#gabung" class="btn">Dukung Kampanye Ini</a>
+    </section>
+
+    <section id="latar-belakang">
+        <h2>Mengapa Budaya Titip Absen Terjadi?</h2>
+        <p>Berdasarkan hasil wawancara dan temuan di lapangan, praktik ini masih marak terjadi karena adanya celah dalam sistem pengawasan kehadiran.</p>
+        
+        <div class="card-container">
+            <div class="card">
+                <h3>Sistem Presensi Kurang Efektif</h3>
+                <p>Metode presensi satu arah, di mana dosen hanya memanggil nama, memberikan peluang besar bagi mahasiswa untuk melakukan kecurangan tanpa pengawasan ketat.</p>
+            </div>
+            <div class="card">
+                <h3>Mudah Dimanipulasi</h3>
+                <p>Ketidakadaan validasi visual atau sistem pendukung lainnya membuat mahasiswa merasa aman saat menitipkan kehadirannya kepada teman.</p>
+            </div>
+            <div class="card">
+                <h3>Dianggap Lumrah</h3>
+                <p>Karena sering terjadi dan minimnya sanksi tegas yang terlihat, tindakan tidak terpuji ini perlahan bergeser menjadi "hal yang biasa" di kalangan mahasiswa.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="langkah-nyata">
+        <h2>Langkah Nyata yang Bisa Dilakukan</h2>
+        <p>Proyek ini bertujuan untuk membawa perubahan melalui langkah-langkah konkret:</p>
+        <br>
+        <ul class="step-list">
+            <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Mengajak mahasiswa menyadari pentingnya kehadiran fisik dan kejujuran dalam menuntut ilmu.</li>
+            <li><strong>Edukasi Sanksi & Dampak:</strong> Memberikan pemahaman mendalam mengenai sanksi akademik dan dampak jangka panjang dari hilangnya integritas diri.</li>
+            <li><strong>Menciptakan Budaya Malu:</strong> Membangun lingkungan sosial kampus di mana mahasiswa merasa malu untuk melakukan atau membantu praktik titip absen.</li>
+            <li><strong>Inovasi Sistem (Usulan):</strong> Mendorong pihak fakultas untuk menerapkan sistem presensi berbasis teknologi yang memerlukan validasi visual atau biometrik.</li>
+        </ul>
+    </section>
+
+    <section id="gabung">
+        <div class="form-container">
+            <h2 style="text-align: center;">Komitmen Zero Titip Absen</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Daftarkan dirimu sebagai bagian dari pergerakan integritas akademik!</p>
+            
+            <form id="kampanyeForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" placeholder="Masukkan nama lengkapmu" required>
+                </div>
+                <div class="form-group">
+                    <label for="nim">NIM</label>
+                    <input type="text" id="nim" placeholder="Contoh: 2504130074" required>
+                </div>
+                <div class="form-group">
+                    <label for="jurusan">Jurusan / Program Studi</label>
+                    <input type="text" id="jurusan" placeholder="Contoh: Ilmu Komputer" required>
+                </div>
+                <div class="form-group">
+                    <label for="angkatan">Angkatan</label>
+                    <select id="angkatan" required>
+                        <option value="" disabled selected>Pilih Tahun Angkatan</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Kirim Komitmen Saya</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Kampanye Zero Titip Absen. Dibangun untuk Integritas Akademik UNNES.</p>
+    </footer>
+
+    <script>
+        // Fungsi sederhana untuk menangani submit form
+        function submitForm(event) {
+            event.preventDefault(); // Mencegah halaman reload
+            
+            // Mengambil nilai dari input
+            const nama = document.getElementById('nama').value;
+            const jurusan = document.getElementById('jurusan').value;
+            
+            // Menampilkan alert terima kasih
+            alert(`Terima kasih ${nama} dari jurusan ${jurusan}! Komitmenmu untuk Zero Titip Absen telah dicatat. Mari bersama wujudkan kampus berintegritas!`);
+            
+            // Reset form setelah disubmit
+            document.getElementById('kampanyeForm').reset();
+        }
+    </script>
+</body>
+</html>
