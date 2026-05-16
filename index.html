@@ -236,6 +236,17 @@
             max-width: 400px;
             line-height: 1.5;
         }
+
+        .debug-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #333;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -279,11 +290,11 @@
                 </div>
                 <div class="form-group">
                     <label>NIM</label>
-                    <input type="text" placeholder="Contoh: 2504130074" required>
+                    <input type="text" placeholder="Masukkan NIM" required>
                 </div>
                 <div class="form-group">
                     <label>Jurusan / Program Studi</label>
-                    <input type="text" placeholder="Contoh: Ilmu Komputer" required>
+                    <input type="text" placeholder="Masukkan Jurusan" required>
                 </div>
                 <div class="form-group">
                     <label>Angkatan</label>
@@ -324,176 +335,4 @@
             <form onsubmit="alert('Ide kamu berhasil dikirim! Terima kasih.'); goHome(); return false;">
                 <div class="form-group">
                     <label>Nama (Boleh Inisial/Anonim)</label>
-                    <input type="text" placeholder="Nama kamu">
-                </div>
-                <div class="form-group">
-                    <label>Deskripsi Ide / Solusi</label>
-                    <textarea rows="5" placeholder="Tuliskan idemu untuk mencegah titip absen di sini..." required></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Kirim Ide</button>
-            </form>
-            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
-        </div>
-
-        <div id="presensiSection" class="content-section">
-            <h2>Prototipe Presensi Cerdas</h2>
-            <p>Fitur ini mensimulasikan validasi keamanan ganda: <strong>Pendeteksian Wajah (Live Camera)</strong> dan <strong>Validasi Area Fakultas (GPS Geofencing)</strong>.</p>
-            
-            <div class="camera-container" id="kameraContainer">
-                <video id="kamera" autoplay playsinline></video>
-                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="ambilFoto()">📸 Rekam Kehadiran</button>
-            </div>
-
-            <div id="hasilFotoContainer" class="camera-container" style="display: none;">
-                <h3 style="margin-bottom: 15px; color: var(--text-dark);">Hasil Validasi Kehadiran:</h3>
-                <canvas id="kanvasFoto"></canvas>
-                <div id="statusLokasi" class="status-box"></div>
-                <button type="button" class="btn-submit" style="background-color: #757575; width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
-            </div>
-
-            <button class="btn-back" onclick="stopCamera(); goHome()">⬅ Kembali</button>
-        </div>
-    </main>
-
-    <script>
-        // --- DATA KOORDINAT FAKULTAS ---
-        // Kamu bisa menyesuaikan titik koordinat ini agar lebih presisi.
-        const ZONASI_KAMPUS = [
-            { nama: "Fakultas Teknik (FT)", lat: -7.05150, lon: 110.39350 }, // Perkiraan koordinat FT
-            { nama: "FMIPA", lat: -7.04870, lon: 110.38960 }                // Perkiraan koordinat FMIPA
-        ];
-        
-        const RADIUS_MAKSIMAL = 200; // Toleransi jarak maksimal dari gedung dalam meter
-
-        // Rumus Haversine untuk menghitung jarak nyata antara 2 koordinat GPS (dalam meter)
-        function hitungJarak(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; // Radius bumi dalam meter
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c; 
-        }
-
-        let videoStream;
-
-        // Fungsi Navigasi Tampilan
-        function showSection(sectionId) {
-            document.getElementById('mainMenu').style.display = 'none';
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(sec => sec.style.display = 'none');
-            document.getElementById(sectionId).style.display = 'block';
-        }
-
-        function goHome() {
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(sec => sec.style.display = 'none');
-            document.getElementById('mainMenu').style.display = 'grid';
-        }
-
-        // Fungsi Kamera Live
-        function startCamera() {
-            const video = document.getElementById('kamera');
-            document.getElementById('kameraContainer').style.display = 'flex';
-            document.getElementById('hasilFotoContainer').style.display = 'none';
-
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-                .then(function(stream) {
-                    videoStream = stream;
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(err) {
-                    alert("Akses kamera diperlukan untuk fitur presensi ini.");
-                });
-            } else {
-                alert("Browser kamu tidak mendukung akses kamera.");
-            }
-        }
-
-        function stopCamera() {
-            if (videoStream) {
-                videoStream.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        function resetKamera() {
-            document.getElementById('hasilFotoContainer').style.display = 'none';
-            document.getElementById('kameraContainer').style.display = 'flex';
-        }
-
-        // Fungsi Jepret Foto & Hitung Jarak Geofencing
-        function ambilFoto() {
-            const video = document.getElementById('kamera');
-            const canvas = document.getElementById('kanvasFoto');
-            const context = canvas.getContext('2d');
-            
-            document.getElementById('kameraContainer').style.display = 'none';
-            document.getElementById('hasilFotoContainer').style.display = 'flex';
-
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const statusBox = document.getElementById('statusLokasi');
-            statusBox.innerHTML = "Mengecek koordinat lokasi kampus...";
-            statusBox.style.backgroundColor = "#fff3e0";
-            statusBox.style.color = "#e65100";
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const latUser = position.coords.latitude;
-                        const lonUser = position.coords.longitude;
-                        
-                        let lokasiDitemukan = null;
-                        let jarakTerdekat = Infinity;
-
-                        // Looping untuk mencari fakultas mana yang posisinya paling dekat dengan user
-                        for (const zona of ZONASI_KAMPUS) {
-                            const jarak = hitungJarak(latUser, lonUser, zona.lat, zona.lon);
-                            if (jarak < jarakTerdekat) {
-                                jarakTerdekat = jarak;
-                                // Jika jarak di bawah batas radius maksimal, simpan datanya
-                                if (jarak <= RADIUS_MAKSIMAL) {
-                                    lokasiDitemukan = zona;
-                                }
-                            }
-                        }
-
-                        // Hasil Logika Presensi
-                        if (lokasiDitemukan) {
-                            statusBox.style.backgroundColor = "#e8f5e9";
-                            statusBox.style.color = "var(--text-dark)";
-                            statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
-                                                   <span style="font-size: 0.9em; font-weight: normal;">
-                                                   Kamu terdeteksi di: <strong>${lokasiDitemukan.nama}</strong><br>
-                                                   Jarak ke titik tengah gedung: ${Math.round(jarakTerdekat)} meter<br>
-                                                   Titik GPS kamu: ${latUser.toFixed(5)}, ${lonUser.toFixed(5)}</span>`;
-                        } else {
-                            statusBox.style.backgroundColor = "#ffebee";
-                            statusBox.style.color = "#c62828";
-                            statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
-                                                   Kamu berada di luar area kampus!<br>
-                                                   <span style="font-size: 0.85em; font-weight: normal;">
-                                                   Jarak ke kampus terdekat: ${Math.round(jarakTerdekat)} meter.<br>
-                                                   Titik GPS kamu: ${latUser.toFixed(5)}, ${lonUser.toFixed(5)}</span>`;
-                        }
-                    },
-                    (error) => {
-                        statusBox.style.backgroundColor = "#ffebee";
-                        statusBox.style.color = "#c62828";
-                        statusBox.innerHTML = "❌ <strong>Presensi Gagal!</strong><br>Tidak bisa mendeteksi lokasi (pastikan GPS nyala dan browser diizinkan mengakses lokasi).";
-                    },
-                    { enableHighAccuracy: true, timeout: 5000 }
-                );
-            } else {
-                statusBox.innerHTML = "Browser kamu tidak mendukung fitur pendeteksian lokasi.";
-            }
-        }
-    </script>
-</body>
-</html>
+                    <input type="text"
