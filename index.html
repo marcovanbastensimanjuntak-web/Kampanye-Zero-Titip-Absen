@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kampanye Zero Titip Absen UNNES</title>
     <style>
-        /* --- TEMA WARNA HIJAU SOFT ELEGAN --- */
         :root {
             --bg-color: #f4fbf4;
             --primary-green: #66bb6a;
@@ -33,7 +32,6 @@
             align-items: center;
         }
 
-        /* --- HEADER --- */
         header {
             text-align: center;
             padding: 40px 20px 20px;
@@ -51,7 +49,6 @@
             font-size: 1.1rem;
         }
 
-        /* --- MAIN CONTAINER --- */
         main {
             width: 100%;
             max-width: 1000px;
@@ -59,7 +56,6 @@
             flex-grow: 1;
         }
 
-        /* --- GRID MENU UTAMA --- */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -94,7 +90,6 @@
             color: var(--text-dark);
         }
 
-        /* --- KONTEN DETAIL --- */
         .content-section {
             display: none;
             background-color: var(--card-bg);
@@ -141,7 +136,6 @@
             background-color: #ccc;
         }
 
-        /* --- FORM STYLING --- */
         .form-group {
             margin-bottom: 15px;
             text-align: left;
@@ -207,7 +201,6 @@
             top: 2px;
         }
 
-        /* --- PRESENSI CAMERA CONTAINER --- */
         .camera-container {
             display: flex;
             flex-direction: column;
@@ -236,7 +229,7 @@
             max-width: 400px;
             line-height: 1.5;
         }
-
+        
         .debug-info {
             margin-top: 10px;
             padding: 10px;
@@ -274,7 +267,7 @@
                 <div class="menu-icon">💡</div>
                 <h3>Kirim Ide Kamu</h3>
             </div>
-            <div class="menu-card" onclick="showSection('presensiSection'); startCamera()">
+            <div class="menu-card" onclick="mulaiPresensi()">
                 <div class="menu-icon">📸</div>
                 <h3>Coba Presensi Aman</h3>
             </div>
@@ -282,7 +275,6 @@
 
         <div id="loginSection" class="content-section">
             <h2>Daftar & Beri Komitmen</h2>
-            <p>Jadilah agen perubahan. Daftarkan dirimu sebagai mahasiswa yang berkomitmen menolak budaya titip absen.</p>
             <form onsubmit="alert('Terima kasih atas komitmenmu!'); goHome(); return false;">
                 <div class="form-group">
                     <label>Nama Lengkap</label>
@@ -331,8 +323,190 @@
 
         <div id="ideSection" class="content-section">
             <h2>Punya Ide Brilian?</h2>
-            <p>Punya saran sistem presensi baru atau cara kampanye yang lebih asik? Sampaikan idemu di sini!</p>
             <form onsubmit="alert('Ide kamu berhasil dikirim! Terima kasih.'); goHome(); return false;">
                 <div class="form-group">
                     <label>Nama (Boleh Inisial/Anonim)</label>
-                    <input type="text"
+                    <input type="text" placeholder="Nama kamu">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Ide / Solusi</label>
+                    <textarea rows="5" placeholder="Tuliskan idemu untuk mencegah titip absen di sini..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Ide</button>
+            </form>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="presensiSection" class="content-section">
+            <h2>Prototipe Presensi Cerdas</h2>
+            <p>Fitur ini mensimulasikan validasi keamanan ganda: <strong>Pendeteksian Wajah (Live Camera)</strong> dan <strong>Validasi Area Fakultas (GPS Geofencing)</strong>.</p>
+            
+            <div class="camera-container" id="kameraContainer">
+                <video id="kamera" autoplay playsinline></video>
+                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="ambilFoto()">📸 Rekam Kehadiran</button>
+            </div>
+
+            <div id="hasilFotoContainer" class="camera-container" style="display: none;">
+                <h3 style="margin-bottom: 15px; color: var(--text-dark);">Hasil Validasi Kehadiran:</h3>
+                <canvas id="kanvasFoto"></canvas>
+                <div id="statusLokasi" class="status-box"></div>
+                <button type="button" class="btn-submit" style="background-color: #757575; width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
+            </div>
+
+            <button class="btn-back" onclick="stopCamera(); goHome()">⬅ Kembali</button>
+        </div>
+    </main>
+
+    <script>
+        // Data Koordinat (Radius diperbesar jadi 500m)
+        const ZONASI_KAMPUS = [
+            { nama: "Fakultas Teknik (FT)", lat: -7.05240, lon: 110.39500 },
+            { nama: "FMIPA", lat: -7.04870, lon: 110.38960 }                
+        ];
+        const RADIUS_MAKSIMAL = 500; 
+
+        function hitungJarak(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c; 
+        }
+
+        let videoStream;
+
+        function showSection(sectionId) {
+            try {
+                document.getElementById('mainMenu').style.display = 'none';
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById(sectionId).style.display = 'block';
+            } catch (error) {
+                console.error("Error menampilkan section:", error);
+            }
+        }
+
+        function goHome() {
+            try {
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById('mainMenu').style.display = 'grid';
+            } catch (error) {
+                console.error("Error kembali ke menu utama:", error);
+            }
+        }
+
+        function mulaiPresensi() {
+            showSection('presensiSection');
+            startCamera();
+        }
+
+        function startCamera() {
+            const video = document.getElementById('kamera');
+            document.getElementById('kameraContainer').style.display = 'flex';
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.error("Kamera ditolak:", err);
+                    alert("Akses kamera ditolak atau tidak tersedia. Fitur presensi tidak bisa berjalan maksimal.");
+                });
+            } else {
+                alert("Browser kamu tidak mendukung akses kamera secara langsung.");
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function resetKamera() {
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+            document.getElementById('kameraContainer').style.display = 'flex';
+        }
+
+        function ambilFoto() {
+            try {
+                const video = document.getElementById('kamera');
+                const canvas = document.getElementById('kanvasFoto');
+                const context = canvas.getContext('2d');
+                
+                document.getElementById('kameraContainer').style.display = 'none';
+                document.getElementById('hasilFotoContainer').style.display = 'flex';
+
+                canvas.width = video.videoWidth || 300;
+                canvas.height = video.videoHeight || 200;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const statusBox = document.getElementById('statusLokasi');
+                statusBox.innerHTML = "Mengecek koordinat lokasi kampus...";
+                statusBox.style.backgroundColor = "#fff3e0";
+                statusBox.style.color = "#e65100";
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latUser = position.coords.latitude;
+                            const lonUser = position.coords.longitude;
+                            
+                            let lokasiDitemukan = null;
+                            let jarakTerdekat = Infinity;
+
+                            for (const zona of ZONASI_KAMPUS) {
+                                const jarak = hitungJarak(latUser, lonUser, zona.lat, zona.lon);
+                                if (jarak < jarakTerdekat) {
+                                    jarakTerdekat = jarak;
+                                    if (jarak <= RADIUS_MAKSIMAL) {
+                                        lokasiDitemukan = zona;
+                                    }
+                                }
+                            }
+
+                            if (lokasiDitemukan) {
+                                statusBox.style.backgroundColor = "#e8f5e9";
+                                statusBox.style.color = "var(--text-dark)";
+                                statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
+                                                       <span style="font-size: 0.9em; font-weight: normal;">
+                                                       Area terdeteksi: <strong>${lokasiDitemukan.nama}</strong><br>
+                                                       (Jarak: ${Math.round(jarakTerdekat)}m dari pusat gedung)</span>`;
+                            } else {
+                                statusBox.style.backgroundColor = "#ffebee";
+                                statusBox.style.color = "#c62828";
+                                statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
+                                                       Di luar area kampus (Radius: ${RADIUS_MAKSIMAL}m).<br>
+                                                       <div class="debug-info">
+                                                            <strong>Lokasi kamu saat ini:</strong><br>
+                                                            Lat: ${latUser.toFixed(5)}, Lon: ${lonUser.toFixed(5)}<br>
+                                                            Jarak ke kampus: ${Math.round(jarakTerdekat)}m.
+                                                       </div>`;
+                            }
+                        },
+                        (error) => {
+                            console.error("GPS Error:", error);
+                            statusBox.style.backgroundColor = "#ffebee";
+                            statusBox.style.color = "#c62828";
+                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala dan izinkan browser mengakses lokasi.";
+                        },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else {
+                    statusBox.innerHTML = "Browser kamu tidak mendukung GPS.";
+                }
+            } catch (error) {
+                console.error("Error saat ambil foto:", error);
+            }
+        }
+    </script>
+</body>
+</html>
