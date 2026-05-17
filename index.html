@@ -348,15 +348,18 @@
 
         <div id="alasanSection" class="content-section">
             <h2>Akar Masalah Budaya Titip Absen</h2>
-            <p>Temuan di lapangan menunjukkan bahwa sistem presensi konvensional satu arah—di mana dosen hanya memanggil nama—memberikan celah yang signifikan bagi mahasiswa untuk melakukan kecurangan. Tanpa pengawasan yang ketat, dosen kesulitan mengenali wajah setiap individu secara pasti.</p>
+            <p>Temuan di lapangan menunjukkan bahwa sistem presensi konvensional satu arah memberikan celah yang signifikan bagi mahasiswa untuk melakukan kecurangan. Tanpa pengawasan yang ketat, dosen kesulitan untuk mengenali wajah setiap individu secara pasti.</p>
+            <p>Ketidakhadiran validasi visual atau biometrik membuat mahasiswa merasa bahwa menitipkan absen adalah tindakan yang aman. Praktik ini bertahap kehilangan stigma negatifnya dan mulai dianggap sebagai bentuk "solidaritas", yang pada akhirnya mengikis integritas akademik.</p>
             <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
 
         <div id="langkahSection" class="content-section">
             <h2>Langkah Nyata Mencegah Titip Absen</h2>
             <ul class="styled-list">
-                <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Membangun pemahaman bahwa kehadiran fisik bukan sekadar kewajiban administratif.</li>
-                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan absensi berbasis validasi visual (Live Selfie) dan pembatasan lokasi dinamis (GPS Geofencing) yang disesuaikan dengan Fakultas.</li>
+                <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Membangun pemahaman bahwa kehadiran fisik adalah bentuk tanggung jawab terhadap ilmu.</li>
+                <li><strong>Edukasi Dampak Jangka Panjang:</strong> Menyadarkan mahasiswa bahwa ketidakjujuran kecil dapat membentuk karakter koruptif.</li>
+                <li><strong>Menciptakan Budaya Malu:</strong> Mengubah narasi "solidaritas teman" menjadi "merugikan teman".</li>
+                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan absensi berbasis validasi visual (Live Selfie) dan pembatasan lokasi spesifik gedung fakultas.</li>
             </ul>
             <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
@@ -370,7 +373,7 @@
                 </div>
                 <div class="form-group">
                     <label>Deskripsi Ide / Solusi</label>
-                    <textarea rows="5" placeholder="Tuliskan idemu..." required></textarea>
+                    <textarea rows="5" placeholder="Tuliskan idemu di sini..." required></textarea>
                 </div>
                 <button type="submit" class="btn-submit">Kirim Ide</button>
             </form>
@@ -379,31 +382,32 @@
 
         <div id="presensiSection" class="content-section">
             <h2>Prototipe Presensi Cerdas</h2>
-            <p>Sistem ini mencocokkan wajah dan <strong>memastikan lokasimu sesuai dengan Fakultas</strong> tempat kelas berlangsung.</p>
+            <p>Pilih lokasi gedung perkuliahanmu saat ini. Sistem akan memvalidasi wajah dan radius posisi GPS eksklusif hanya untuk fakultas yang dipilih.</p>
             
-            <div class="form-group" style="width: 100%; max-width: 400px; margin: 0 auto 15px;">
-                <label>Pilih Lokasi Fakultas Mata Kuliah:</label>
-                <select id="pilihanFakultas" style="font-weight: bold; border: 2px solid var(--primary-green);">
-                    <option value="" disabled selected>-- Pilih Fakultas --</option>
-                    <option value="FMIPA">Fakultas MIPA (FMIPA)</option>
-                    <option value="FBS">Fakultas Bahasa & Seni (FBS)</option>
-                    <option value="FEB">Fakultas Ekonomi & Bisnis (FEB)</option>
-                    <option value="FISIP">Fakultas Ilmu Sosial & Politik (FISIP)</option>
-                    <option value="FIPP">Fakultas Ilmu Pendidikan & Psikologi (FIPP)</option>
-                    <option value="FT">Fakultas Teknik (FT)</option>
-                    <option value="FIK">Fakultas Ilmu Keolahragaan (FIK)</option>
-                    <option value="FK">Fakultas Kedokteran (Kampus Kelud)</option>
-                    <option value="PGSD">PGSD (Kampus Ngaliyan)</option>
-                </select>
-            </div>
-
             <div class="camera-container" id="kameraContainer">
+                <div class="form-group" style="width: 100%; max-width: 400px; margin-bottom: 20px;">
+                    <label for="pilihanFakultas">Mata Kuliah Diadakan Di:</label>
+                    <select id="pilihanFakultas">
+                        <option value="" disabled selected>-- Pilih Fakultas --</option>
+                        <option value="FMIPA">FMIPA (Fakultas Matematika & IPA)</option>
+                        <option value="FBS">FBS (Fakultas Bahasa & Seni)</option>
+                        <option value="FEB">FEB (Fakultas Ekonomika & Bisnis)</option>
+                        <option value="FISIP">FISIP (Fakultas Ilmu Sosial & Ilmu Politik)</option>
+                        <option value="FIPP">FIPP (Fakultas Ilmu Pendidikan & Psikologi)</option>
+                        <option value="FH">FH (Fakultas Hukum)</option>
+                        <option value="FT">FT (Fakultas Teknik)</option>
+                        <option value="FK">FK (Fakultas Kedokteran)</option>
+                        <option value="FIK">FIK (Fakultas Ilmu Keolahragaan)</option>
+                        <option value="PGSD">PGSD (Fakultas Ilmu Pendidikan)</option>
+                    </select>
+                </div>
+
                 <video id="kamera" autoplay playsinline></video>
-                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="validasiDanAmbilFoto()">📸 Rekam Kehadiran</button>
+                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="ambilFoto()">📸 Rekam Kehadiran</button>
             </div>
 
             <div id="hasilFotoContainer" class="camera-container" style="display: none;">
-                <h3 style="margin-bottom: 15px;">Hasil Validasi:</h3>
+                <h3 style="margin-bottom: 15px;">Hasil Validasi Kehadiran:</h3>
                 <canvas id="kanvasFoto"></canvas>
                 <div id="statusLokasi" class="status-box"></div>
                 <button type="button" class="btn-submit" style="background-color: var(--input-border); color: var(--text-dark); width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
@@ -434,20 +438,23 @@
             }
         }
 
-        // --- DATA KOORDINAT SELURUH FAKULTAS UNNES ---
+        // --- DATA KOORDINAT SELURUH FAKULTAS ---
+        // Catatan: Ini adalah koordinat estimasi wilayah Sekaran & PGSD Kelud/Ngaliyan.
+        // Silakan sesuaikan angka lat dan lon jika ingin lebih tepat ke titik tengah gedung.
         const KOORDINAT_FAKULTAS = {
-            "FMIPA": { lat: -7.04870, lon: 110.38960, nama: "Fakultas MIPA" },
-            "FBS": { lat: -7.04900, lon: 110.39300, nama: "Fakultas Bahasa & Seni" },
-            "FEB": { lat: -7.04750, lon: 110.39500, nama: "Fakultas Ekonomi & Bisnis" },
-            "FISIP": { lat: -7.05100, lon: 110.39800, nama: "Fakultas Ilmu Sosial & Politik" },
-            "FIPP": { lat: -7.04800, lon: 110.39200, nama: "Fakultas Ilmu Pendidikan & Psikologi" },
-            "FT": { lat: -7.05240, lon: 110.39500, nama: "Fakultas Teknik" },
-            "FIK": { lat: -7.05300, lon: 110.39200, nama: "Fakultas Ilmu Keolahragaan" },
-            "FK": { lat: -7.00400, lon: 110.40000, nama: "Fakultas Kedokteran (Kelud)" },
-            "PGSD": { lat: -6.99500, lon: 110.34600, nama: "PGSD (Ngaliyan)" }
+            "FMIPA": { lat: -7.04870, lon: 110.38960 },
+            "FBS":   { lat: -7.05050, lon: 110.39050 },
+            "FEB":   { lat: -7.05320, lon: 110.39210 },
+            "FISIP": { lat: -7.05350, lon: 110.39720 },
+            "FIPP":  { lat: -7.05020, lon: 110.39650 },
+            "FH":    { lat: -7.04950, lon: 110.39410 },
+            "FT":    { lat: -7.05240, lon: 110.39500 },
+            "FK":    { lat: -7.05510, lon: 110.39120 },
+            "FIK":   { lat: -7.05180, lon: 110.39840 },
+            "PGSD":  { lat: -7.00010, lon: 110.40050 } 
         };
-        
-        const RADIUS_MAKSIMAL = 500; 
+
+        const RADIUS_MAKSIMAL = 500; // Toleransi jarak 500 meter
 
         function hitungJarak(lat1, lon1, lat2, lon2) {
             const R = 6371e3;
@@ -463,16 +470,24 @@
         let videoStream;
 
         function showSection(sectionId) {
-            document.getElementById('mainMenu').style.display = 'none';
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(sec => sec.style.display = 'none');
-            document.getElementById(sectionId).style.display = 'block';
+            try {
+                document.getElementById('mainMenu').style.display = 'none';
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById(sectionId).style.display = 'block';
+            } catch (error) {
+                console.error("Error menampilkan section:", error);
+            }
         }
 
         function goHome() {
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(sec => sec.style.display = 'none');
-            document.getElementById('mainMenu').style.display = 'grid';
+            try {
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById('mainMenu').style.display = 'grid';
+            } catch (error) {
+                console.error("Error kembali ke menu:", error);
+            }
         }
 
         function mulaiPresensi() {
@@ -493,10 +508,10 @@
                     video.play();
                 })
                 .catch(function(err) {
-                    alert("Akses kamera ditolak.");
+                    alert("Akses kamera ditolak atau tidak tersedia.");
                 });
             } else {
-                alert("Browser tidak mendukung kamera.");
+                alert("Browser tidak mendukung akses kamera.");
             }
         }
 
@@ -511,69 +526,71 @@
             document.getElementById('kameraContainer').style.display = 'flex';
         }
 
-        // Fungsi Baru: Validasi apakah dropdown fakultas sudah dipilih sebelum absen
-        function validasiDanAmbilFoto() {
-            const pilihan = document.getElementById('pilihanFakultas').value;
-            if (!pilihan) {
-                alert("Wajib memilih Lokasi Fakultas tempat mata kuliah berlangsung sebelum melakukan absensi!");
-                document.getElementById('pilihanFakultas').focus();
+        function ambilFoto() {
+            const pilihanFakultas = document.getElementById('pilihanFakultas').value;
+            
+            // Validasi apakah fakultas sudah dipilih
+            if (!pilihanFakultas) {
+                alert("Silakan pilih Fakultas terlebih dahulu sebelum merekam kehadiran!");
                 return;
             }
-            ambilFoto(pilihan);
-        }
 
-        function ambilFoto(kodeFakultasTerpilih) {
-            const video = document.getElementById('kamera');
-            const canvas = document.getElementById('kanvasFoto');
-            const context = canvas.getContext('2d');
-            
-            document.getElementById('kameraContainer').style.display = 'none';
-            document.getElementById('hasilFotoContainer').style.display = 'flex';
+            try {
+                const video = document.getElementById('kamera');
+                const canvas = document.getElementById('kanvasFoto');
+                const context = canvas.getContext('2d');
+                
+                document.getElementById('kameraContainer').style.display = 'none';
+                document.getElementById('hasilFotoContainer').style.display = 'flex';
 
-            canvas.width = video.videoWidth || 300;
-            canvas.height = video.videoHeight || 200;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const statusBox = document.getElementById('statusLokasi');
-            const targetZona = KOORDINAT_FAKULTAS[kodeFakultasTerpilih];
+                canvas.width = video.videoWidth || 300;
+                canvas.height = video.videoHeight || 200;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const statusBox = document.getElementById('statusLokasi');
+                statusBox.innerHTML = "Mengecek koordinat lokasi kampus...";
+                statusBox.style.backgroundColor = "var(--input-bg)";
+                statusBox.style.color = "var(--text-dark)";
 
-            statusBox.innerHTML = `Mengecek koordinat lokasimu dengan area <strong>${targetZona.nama}</strong>...`;
-            statusBox.style.backgroundColor = "var(--input-bg)";
-            statusBox.style.color = "var(--text-dark)";
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latUser = position.coords.latitude;
+                            const lonUser = position.coords.longitude;
+                            
+                            // Mengambil data koordinat spesifik dari fakultas yang dipilih
+                            const targetGedung = KOORDINAT_FAKULTAS[pilihanFakultas];
+                            const jarak = hitungJarak(latUser, lonUser, targetGedung.lat, targetGedung.lon);
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const latUser = position.coords.latitude;
-                        const lonUser = position.coords.longitude;
-                        
-                        // Menghitung jarak HANYA ke fakultas yang DIPILIH user
-                        const jarak = hitungJarak(latUser, lonUser, targetZona.lat, targetZona.lon);
-
-                        if (jarak <= RADIUS_MAKSIMAL) {
-                            statusBox.style.backgroundColor = "rgba(76, 175, 80, 0.2)";
-                            statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
-                                                   <span style="font-size: 0.9em; font-weight: normal;">
-                                                   Kamu terdeteksi berada di dalam area kelas <strong>${targetZona.nama}</strong>.<br>
-                                                   (Jarak: ${Math.round(jarak)}m dari pusat gedung)</span>`;
-                        } else {
+                            if (jarak <= RADIUS_MAKSIMAL) {
+                                statusBox.style.backgroundColor = "rgba(76, 175, 80, 0.2)";
+                                statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
+                                                       <span style="font-size: 0.9em; font-weight: normal;">
+                                                       Area Tervalidasi: <strong>${pilihanFakultas}</strong><br>
+                                                       (Jarak: ${Math.round(jarak)}m dari pusat gedung)</span>`;
+                            } else {
+                                statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
+                                statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
+                                                       Kamu tidak berada di area ${pilihanFakultas} (Radius toleransi: ${RADIUS_MAKSIMAL}m).<br>
+                                                       <div class="debug-info">
+                                                            <strong>Lokasi kamu saat ini:</strong><br>
+                                                            Lat: ${latUser.toFixed(5)}, Lon: ${lonUser.toFixed(5)}<br>
+                                                            Jarak ke ${pilihanFakultas}: ${Math.round(jarak)} meter.<br><br>
+                                                            <em>Jika ini salah, pastikan pilihan fakultasnya sudah tepat!</em>
+                                                       </div>`;
+                            }
+                        },
+                        (error) => {
                             statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
-                            statusBox.innerHTML = `❌ <strong>Presensi DITOLAK!</strong><br>
-                                                   Kamu <strong>TIDAK</strong> berada di area <strong>${targetZona.nama}</strong>!<br>
-                                                   <div class="debug-info">
-                                                        Jarak melenceng: ${Math.round(jarak)}m (Maks toleransi: ${RADIUS_MAKSIMAL}m).<br>
-                                                        Titik GPS aslimu: ${latUser.toFixed(5)}, ${lonUser.toFixed(5)}
-                                                   </div>`;
-                        }
-                    },
-                    (error) => {
-                        statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
-                        statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala.";
-                    },
-                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                );
-            } else {
-                statusBox.innerHTML = "Browser kamu tidak mendukung GPS.";
+                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala.";
+                        },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else {
+                    statusBox.innerHTML = "Browser kamu tidak mendukung GPS.";
+                }
+            } catch (error) {
+                console.error("Error:", error);
             }
         }
     </script>
