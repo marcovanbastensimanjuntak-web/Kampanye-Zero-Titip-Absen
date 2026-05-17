@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kampanye Zero Titip Absen UNNES</title>
     <style>
+        /* --- TEMA WARNA (LIGHT & DARK) --- */
         :root {
             --bg-color: #f4fbf4;
             --primary-green: #66bb6a;
@@ -13,7 +14,21 @@
             --text-dark: #1b5e20;
             --text-muted: #555555;
             --shadow: 0 8px 20px rgba(76, 175, 80, 0.08);
+            --input-bg: #f9fdf9;
+            --input-border: #c8e6c9;
             --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --primary-green: #81c784;
+            --hover-green: #a5d6a7;
+            --card-bg: #1e1e1e;
+            --text-dark: #e8f5e9;
+            --text-muted: #b0bec5;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            --input-bg: #2c2c2c;
+            --input-border: #444444;
         }
 
         * {
@@ -30,25 +45,54 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: var(--transition);
         }
 
+        /* --- HEADER & TOGGLE DARK MODE --- */
         header {
             text-align: center;
             padding: 40px 20px 20px;
             width: 100%;
+            position: relative;
         }
 
         header h1 {
             font-size: 2.5rem;
             color: var(--text-dark);
             margin-bottom: 10px;
+            transition: var(--transition);
         }
 
         header p {
             color: var(--text-muted);
             font-size: 1.1rem;
+            transition: var(--transition);
         }
 
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-green);
+            color: var(--text-dark);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- MAIN CONTAINER --- */
         main {
             width: 100%;
             max-width: 1000px;
@@ -56,6 +100,7 @@
             flex-grow: 1;
         }
 
+        /* --- GRID MENU UTAMA --- */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -77,7 +122,6 @@
         .menu-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary-green);
-            box-shadow: 0 12px 25px rgba(76, 175, 80, 0.15);
         }
 
         .menu-icon {
@@ -90,6 +134,7 @@
             color: var(--text-dark);
         }
 
+        /* --- KONTEN DETAIL --- */
         .content-section {
             display: none;
             background-color: var(--card-bg);
@@ -123,9 +168,9 @@
             display: inline-block;
             margin-top: 30px;
             padding: 10px 20px;
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--input-border);
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
@@ -133,9 +178,10 @@
         }
 
         .btn-back:hover {
-            background-color: #ccc;
+            background-color: var(--input-border);
         }
 
+        /* --- FORM STYLING --- */
         .form-group {
             margin-bottom: 15px;
             text-align: left;
@@ -145,14 +191,16 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
+            color: var(--text-dark);
         }
 
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #c8e6c9;
+            border: 1px solid var(--input-border);
             border-radius: 8px;
-            background-color: #f9fdf9;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
             transition: var(--transition);
             font-size: 1rem;
         }
@@ -160,7 +208,6 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-green);
-            background-color: #fff;
             box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
         }
 
@@ -168,7 +215,7 @@
             width: 100%;
             padding: 14px;
             background-color: var(--primary-green);
-            color: white;
+            color: #ffffff;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
@@ -201,13 +248,14 @@
             top: 2px;
         }
 
+        /* --- PRESENSI CAMERA CONTAINER --- */
         .camera-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 20px 0;
             padding: 20px;
-            background: #f1f8e9;
+            background: var(--input-bg);
             border-radius: 12px;
             border: 1px dashed var(--primary-green);
         }
@@ -233,11 +281,11 @@
         .debug-info {
             margin-top: 10px;
             padding: 10px;
-            background: #fff;
-            border: 1px solid #ccc;
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
             border-radius: 6px;
             font-size: 0.85em;
-            color: #333;
+            color: var(--text-muted);
             text-align: left;
         }
     </style>
@@ -245,6 +293,7 @@
 <body>
 
     <header>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
         <h1>Zero Titip Absen</h1>
         <p>Inisiatif Integritas Akademik Kampus UNNES</p>
     </header>
@@ -347,10 +396,10 @@
             </div>
 
             <div id="hasilFotoContainer" class="camera-container" style="display: none;">
-                <h3 style="margin-bottom: 15px; color: var(--text-dark);">Hasil Validasi Kehadiran:</h3>
+                <h3 style="margin-bottom: 15px;">Hasil Validasi Kehadiran:</h3>
                 <canvas id="kanvasFoto"></canvas>
                 <div id="statusLokasi" class="status-box"></div>
-                <button type="button" class="btn-submit" style="background-color: #757575; width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
+                <button type="button" class="btn-submit" style="background-color: var(--input-border); color: var(--text-dark); width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
             </div>
 
             <button class="btn-back" onclick="stopCamera(); goHome()">⬅ Kembali</button>
@@ -358,7 +407,30 @@
     </main>
 
     <script>
-        // Data Koordinat (Radius diperbesar jadi 500m)
+        // --- LOGIKA DARK MODE ---
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Cek preferensi tema saat halaman dimuat
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerText = '☀️';
+        }
+
+        // Fungsi saat tombol tema diklik
+        function toggleTheme() {
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerText = '🌙';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerText = '☀️';
+            }
+        }
+
+        // --- LOGIKA PRESENSI & NAVIGASI (Tetap Sama) ---
         const ZONASI_KAMPUS = [
             { nama: "Fakultas Teknik (FT)", lat: -7.05240, lon: 110.39500 },
             { nama: "FMIPA", lat: -7.04870, lon: 110.38960 }                
@@ -395,7 +467,7 @@
                 sections.forEach(sec => sec.style.display = 'none');
                 document.getElementById('mainMenu').style.display = 'grid';
             } catch (error) {
-                console.error("Error kembali ke menu utama:", error);
+                console.error("Error kembali ke menu:", error);
             }
         }
 
@@ -417,11 +489,10 @@
                     video.play();
                 })
                 .catch(function(err) {
-                    console.error("Kamera ditolak:", err);
-                    alert("Akses kamera ditolak atau tidak tersedia. Fitur presensi tidak bisa berjalan maksimal.");
+                    alert("Akses kamera ditolak atau tidak tersedia.");
                 });
             } else {
-                alert("Browser kamu tidak mendukung akses kamera secara langsung.");
+                alert("Browser tidak mendukung akses kamera.");
             }
         }
 
@@ -451,8 +522,8 @@
                 
                 const statusBox = document.getElementById('statusLokasi');
                 statusBox.innerHTML = "Mengecek koordinat lokasi kampus...";
-                statusBox.style.backgroundColor = "#fff3e0";
-                statusBox.style.color = "#e65100";
+                statusBox.style.backgroundColor = "var(--input-bg)";
+                statusBox.style.color = "var(--text-dark)";
 
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
@@ -474,15 +545,13 @@
                             }
 
                             if (lokasiDitemukan) {
-                                statusBox.style.backgroundColor = "#e8f5e9";
-                                statusBox.style.color = "var(--text-dark)";
+                                statusBox.style.backgroundColor = "rgba(76, 175, 80, 0.2)";
                                 statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
                                                        <span style="font-size: 0.9em; font-weight: normal;">
                                                        Area terdeteksi: <strong>${lokasiDitemukan.nama}</strong><br>
-                                                       (Jarak: ${Math.round(jarakTerdekat)}m dari pusat gedung)</span>`;
+                                                       (Jarak: ${Math.round(jarakTerdekat)}m dari pusat)</span>`;
                             } else {
-                                statusBox.style.backgroundColor = "#ffebee";
-                                statusBox.style.color = "#c62828";
+                                statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
                                 statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
                                                        Di luar area kampus (Radius: ${RADIUS_MAKSIMAL}m).<br>
                                                        <div class="debug-info">
@@ -493,10 +562,8 @@
                             }
                         },
                         (error) => {
-                            console.error("GPS Error:", error);
-                            statusBox.style.backgroundColor = "#ffebee";
-                            statusBox.style.color = "#c62828";
-                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala dan izinkan browser mengakses lokasi.";
+                            statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
+                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala.";
                         },
                         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                     );
@@ -504,7 +571,7 @@
                     statusBox.innerHTML = "Browser kamu tidak mendukung GPS.";
                 }
             } catch (error) {
-                console.error("Error saat ambil foto:", error);
+                console.error("Error:", error);
             }
         }
     </script>
