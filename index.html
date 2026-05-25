@@ -30,12 +30,14 @@
             --input-bg: #2c2c2c;
             --input-border: #444444;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-dark);
@@ -95,6 +97,7 @@
             padding: 20px;
             flex-grow: 1;
         }
+
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -346,7 +349,7 @@
         <div id="alasanSection" class="content-section">
             <h2>Akar Masalah Budaya Titip Absen</h2>
             <p>Temuan di lapangan menunjukkan bahwa sistem presensi konvensional satu arah memberikan celah yang signifikan bagi mahasiswa untuk melakukan kecurangan. Tanpa pengawasan yang ketat, dosen kesulitan untuk mengenali wajah setiap individu secara pasti.</p>
-            <p>Ketidakhadiran validasi visual atau biometrik membuat mahasiswa merasa bahwa menitipkan absen adalah tindakan yang aman. Praktik ini bertahap kehilangan stigma negatifnya dan mulai dianggap sebagai bentuk "solidaritas", yang pada akhirnya mengikis integritas akademik.</p>
+            <p>Ketidakhadiran validasi visual atau biometrik membuat mahasiswa merasa bahwa menitipkan absen adalah tindakan yang aman. Praktik ini bertahap kehilangan stigma negatifnya dan justru mulai dianggap sebagai bentuk "solidaritas", yang pada akhirnya mengikis integritas akademik.</p>
             <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
         </div>
 
@@ -435,166 +438,9 @@
             }
         }
 
-        // --- DATA KOORDINAT SELURUH FAKULTAS (SUDAH DIPERBAIKI) ---
+        // --- DATA KOORDINAT SELURUH FAKULTAS ---
         const KOORDINAT_FAKULTAS = {
-            // Area Kampus Utama (Sekaran, Gunungpati)
             "FMIPA": { lat: -7.04870, lon: 110.38960 },
             "FBS":   { lat: -7.05050, lon: 110.39050 },
             "FEB":   { lat: -7.05320, lon: 110.39210 },
-            "FISIP": { lat: -7.05350, lon: 110.39720 },
-            "FIPP":  { lat: -7.05020, lon: 110.39650 },
-            "FH":    { lat: -7.04950, lon: 110.39410 },
-            "FT":    { lat: -7.05240, lon: 110.39500 },
-            "FIK":   { lat: -7.05180, lon: 110.39840 },
-            
-            // Area Kampus Luar Sekaran
-            "FK":    { lat: -7.00030, lon: 110.39800 }, // Kampus Kelud (Sampangan)
-            "PGSD":  { lat: -6.98800, lon: 110.34700 }  // Kampus Ngaliyan
-        };
-
-        const RADIUS_MAKSIMAL = 500; // Toleransi jarak 500 meter
-
-        function hitungJarak(lat1, lon1, lat2, lon2) {
-            const R = 6371e3;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c; 
-        }
-
-        let videoStream;
-
-        function showSection(sectionId) {
-            try {
-                document.getElementById('mainMenu').style.display = 'none';
-                const sections = document.querySelectorAll('.content-section');
-                sections.forEach(sec => sec.style.display = 'none');
-                document.getElementById(sectionId).style.display = 'block';
-            } catch (error) {
-                console.error("Error menampilkan section:", error);
-            }
-        }
-
-        function goHome() {
-            try {
-                const sections = document.querySelectorAll('.content-section');
-                sections.forEach(sec => sec.style.display = 'none');
-                document.getElementById('mainMenu').style.display = 'grid';
-            } catch (error) {
-                console.error("Error kembali ke menu:", error);
-            }
-        }
-
-        function mulaiPresensi() {
-            showSection('presensiSection');
-            startCamera();
-        }
-
-        function startCamera() {
-            const video = document.getElementById('kamera');
-            document.getElementById('kameraContainer').style.display = 'flex';
-            document.getElementById('hasilFotoContainer').style.display = 'none';
-
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
-                .then(function(stream) {
-                    videoStream = stream;
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(err) {
-                    alert("Akses kamera ditolak atau tidak tersedia.");
-                });
-            } else {
-                alert("Browser tidak mendukung akses kamera.");
-            }
-        }
-
-        function stopCamera() {
-            if (videoStream) {
-                videoStream.getTracks().forEach(track => track.stop());
-            }
-        }
-
-        function resetKamera() {
-            document.getElementById('hasilFotoContainer').style.display = 'none';
-            document.getElementById('kameraContainer').style.display = 'flex';
-        }
-
-        function ambilFoto() {
-            const pilihanFakultas = document.getElementById('pilihanFakultas').value;
-            
-            if (!pilihanFakultas) {
-                alert("Silakan pilih Fakultas terlebih dahulu sebelum merekam kehadiran!");
-                return;
-            }
-
-            try {
-                const video = document.getElementById('kamera');
-                const canvas = document.getElementById('kanvasFoto');
-                const context = canvas.getContext('2d');
-                
-                document.getElementById('kameraContainer').style.display = 'none';
-                document.getElementById('hasilFotoContainer').style.display = 'flex';
-
-                canvas.width = video.videoWidth || 300;
-                canvas.height = video.videoHeight || 200;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const statusBox = document.getElementById('statusLokasi');
-                statusBox.innerHTML = "Mengecek koordinat lokasi presensi...";
-                statusBox.style.backgroundColor = "var(--input-bg)";
-                statusBox.style.color = "var(--text-dark)";
-
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const latUser = position.coords.latitude;
-                            const lonUser = position.coords.longitude;
-                            
-                            const targetGedung = KOORDINAT_FAKULTAS[pilihanFakultas];
-                            const jarak = hitungJarak(latUser, lonUser, targetGedung.lat, targetGedung.lon);
-
-                            // Format tampilan jarak agar rapi (jika lebih dari 1000m jadikan km)
-                            let teksJarak = Math.round(jarak) + " meter";
-                            if (jarak > 1000) {
-                                teksJarak = (jarak / 1000).toFixed(2) + " kilometer";
-                            }
-
-                            if (jarak <= RADIUS_MAKSIMAL) {
-                                statusBox.style.backgroundColor = "rgba(76, 175, 80, 0.2)";
-                                statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
-                                                       <span style="font-size: 0.9em; font-weight: normal;">
-                                                       Area Tervalidasi: <strong>${pilihanFakultas}</strong><br>
-                                                       (Jarak: ${teksJarak} dari pusat gedung)</span>`;
-                            } else {
-                                statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
-                                statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
-                                                       Kamu tidak berada di area ${pilihanFakultas} (Radius maksimal: ${RADIUS_MAKSIMAL}m).<br>
-                                                       <div class="debug-info">
-                                                            <strong>Lokasi kamu saat ini:</strong><br>
-                                                            Lat: ${latUser.toFixed(5)}, Lon: ${lonUser.toFixed(5)}<br>
-                                                            Jarak ke ${pilihanFakultas}: <strong>${teksJarak}</strong>.<br><br>
-                                                            <em>Tertangkap basah! Jarakmu terlalu jauh dari gedung perkuliahan.</em>
-                                                       </div>`;
-                            }
-                        },
-                        (error) => {
-                            statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
-                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS menyala.";
-                        },
-                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                    );
-                } else {
-                    statusBox.innerHTML = "Browser kamu tidak mendukung GPS.";
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }
-    </script>
-</body>
-</html>
+            "FISIP": { lat: -
