@@ -124,3 +124,479 @@
         .menu-icon {
             font-size: 3rem;
             margin-bottom: 15px;
+        }
+
+        .menu-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .content-section {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-section h2 {
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .content-section p {
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background-color: var(--input-border);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-green);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--hover-green);
+        }
+
+        ul.styled-list {
+            list-style: none;
+        }
+        
+        ul.styled-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        ul.styled-list li::before {
+            content: '🌱';
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .camera-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--input-bg);
+            border-radius: 12px;
+            border: 1px dashed var(--primary-green);
+        }
+
+        #kamera, #kanvasFoto {
+            border-radius: 12px;
+            max-width: 100%;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .status-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+        
+        .debug-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: var(--text-muted);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
+        <h1>Zero Titip Absen</h1>
+        <p>Inisiatif Integritas Akademik Kampus UNNES</p>
+    </header>
+
+    <main>
+        <div id="mainMenu" class="menu-grid">
+            <div class="menu-card" onclick="showSection('loginSection')">
+                <div class="menu-icon">📝</div>
+                <h3>Daftar & Komitmen</h3>
+            </div>
+            <div class="menu-card" onclick="showSection('alasanSection')">
+                <div class="menu-icon">🔍</div>
+                <h3>Akar Masalah</h3>
+            </div>
+            <div class="menu-card" onclick="showSection('langkahSection')">
+                <div class="menu-icon">🛡️</div>
+                <h3>Langkah Pencegahan</h3>
+            </div>
+            <div class="menu-card" onclick="showSection('ideSection')">
+                <div class="menu-icon">💡</div>
+                <h3>Kirim Ide Kamu</h3>
+            </div>
+            <div class="menu-card" onclick="mulaiPresensi()">
+                <div class="menu-icon">📸</div>
+                <h3>Coba Presensi Aman</h3>
+            </div>
+        </div>
+
+        <div id="loginSection" class="content-section">
+            <h2>Daftar & Beri Komitmen</h2>
+            <form onsubmit="alert('Terima kasih atas komitmenmu!'); goHome(); return false;">
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" placeholder="Masukkan nama" required>
+                </div>
+                <div class="form-group">
+                    <label>NIM</label>
+                    <input type="text" placeholder="Masukkan NIM" required>
+                </div>
+                <div class="form-group">
+                    <label>Jurusan / Program Studi</label>
+                    <input type="text" placeholder="Masukkan Jurusan" required>
+                </div>
+                <div class="form-group">
+                    <label>Angkatan</label>
+                    <select required>
+                        <option value="" disabled selected>Pilih Angkatan</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Komitmen</button>
+            </form>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="alasanSection" class="content-section">
+            <h2>Akar Masalah Budaya Titip Absen</h2>
+            <p>Temuan di lapangan menunjukkan bahwa sistem presensi konvensional satu arah memberikan celah yang signifikan bagi mahasiswa untuk melakukan kecurangan. Tanpa pengawasan yang ketat, dosen kesulitan untuk mengenali wajah setiap individu secara pasti.</p>
+            <p>Ketidakhadiran validasi visual atau biometrik membuat mahasiswa merasa bahwa menitipkan absen adalah tindakan yang aman. Praktik ini bertahap kehilangan stigma negatifnya dan justru mulai dianggap sebagai bentuk "solidaritas", yang pada akhirnya mengikis integritas akademik.</p>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="langkahSection" class="content-section">
+            <h2>Langkah Nyata Mencegah Titip Absen</h2>
+            <ul class="styled-list">
+                <li><strong>Meningkatkan Kesadaran Kolektif:</strong> Membangun pemahaman bahwa kehadiran fisik adalah bentuk tanggung jawab terhadap ilmu.</li>
+                <li><strong>Edukasi Dampak Jangka Panjang:</strong> Menyadarkan mahasiswa bahwa ketidakjujuran kecil dapat membentuk karakter koruptif.</li>
+                <li><strong>Menciptakan Budaya Malu:</strong> Mengubah narasi "solidaritas teman" menjadi "merugikan teman".</li>
+                <li><strong>Mendorong Digitalisasi Presensi:</strong> Mengajukan usulan absensi berbasis validasi visual (Live Selfie) dan pembatasan lokasi spesifik gedung fakultas.</li>
+            </ul>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="ideSection" class="content-section">
+            <h2>Punya Ide Brilian?</h2>
+            <form onsubmit="alert('Ide kamu berhasil dikirim! Terima kasih.'); goHome(); return false;">
+                <div class="form-group">
+                    <label>Nama (Boleh Inisial/Anonim)</label>
+                    <input type="text" placeholder="Nama kamu">
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Ide / Solusi</label>
+                    <textarea rows="5" placeholder="Tuliskan idemu di sini..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Ide</button>
+            </form>
+            <button class="btn-back" onclick="goHome()">⬅ Kembali</button>
+        </div>
+
+        <div id="presensiSection" class="content-section">
+            <h2>Prototipe Presensi Cerdas</h2>
+            <p>Pilih lokasi gedung perkuliahanmu saat ini. Sistem akan memvalidasi wajah dan radius posisi GPS eksklusif hanya untuk fakultas yang dipilih.</p>
+            
+            <div class="camera-container" id="kameraContainer">
+                <div class="form-group" style="width: 100%; max-width: 400px; margin-bottom: 20px;">
+                    <label for="pilihanFakultas">Mata Kuliah Diadakan Di:</label>
+                    <select id="pilihanFakultas">
+                        <option value="" disabled selected>-- Pilih Fakultas --</option>
+                        <option value="FMIPA">FMIPA (Fakultas Matematika & IPA)</option>
+                        <option value="FBS">FBS (Fakultas Bahasa & Seni)</option>
+                        <option value="FEB">FEB (Fakultas Ekonomika & Bisnis)</option>
+                        <option value="FISIP">FISIP (Fakultas Ilmu Sosial & Ilmu Politik)</option>
+                        <option value="FIPP">FIPP (Fakultas Ilmu Pendidikan & Psikologi)</option>
+                        <option value="FH">FH (Fakultas Hukum)</option>
+                        <option value="FT">FT (Fakultas Teknik)</option>
+                        <option value="FIK">FIK (Fakultas Ilmu Keolahragaan)</option>
+                        <option value="FK">FK (Fakultas Kedokteran - Kampus Kelud)</option>
+                        <option value="PGSD">PGSD (Kampus Ngaliyan)</option>
+                    </select>
+                </div>
+
+                <video id="kamera" autoplay playsinline></video>
+                <button type="button" class="btn-submit" style="width: auto; padding: 10px 30px; margin-top: 15px;" onclick="ambilFoto()">📸 Rekam Kehadiran</button>
+            </div>
+
+            <div id="hasilFotoContainer" class="camera-container" style="display: none;">
+                <h3 style="margin-bottom: 15px;">Hasil Validasi Kehadiran:</h3>
+                <canvas id="kanvasFoto"></canvas>
+                <div id="statusLokasi" class="status-box"></div>
+                <button type="button" class="btn-submit" style="background-color: var(--input-border); color: var(--text-dark); width: auto; margin-top: 15px;" onclick="resetKamera()">🔄 Coba Ulang</button>
+            </div>
+
+            <button class="btn-back" onclick="stopCamera(); goHome()">⬅ Kembali</button>
+        </div>
+    </main>
+
+    <script>
+        console.log("Sistem Zero Titip Absen berhasil dimuat!");
+
+        // --- LOGIKA DARK MODE ---
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerText = '☀️';
+        }
+
+        function toggleTheme() {
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerText = '🌙';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerText = '☀️';
+            }
+        }
+
+        // --- DATA KOORDINAT SELURUH FAKULTAS ---
+        const KOORDINAT_FAKULTAS = {
+            "FMIPA": { lat: -7.04870, lon: 110.38960 },
+            "FBS":   { lat: -7.05050, lon: 110.39050 },
+            "FEB":   { lat: -7.05320, lon: 110.39210 },
+            "FISIP": { lat: -7.05350, lon: 110.39720 },
+            "FIPP":  { lat: -7.05020, lon: 110.39650 },
+            "FH":    { lat: -7.04950, lon: 110.39410 },
+            "FT":    { lat: -7.05240, lon: 110.39500 },
+            "FIK":   { lat: -7.05180, lon: 110.39840 },
+            "FK":    { lat: -7.00030, lon: 110.39800 },
+            "PGSD":  { lat: -6.98800, lon: 110.34700 }
+        };
+
+        // --- UPDATE RADIUS: Diperbesar menjadi 700 meter ---
+        const RADIUS_MAKSIMAL = 700; 
+
+        function hitungJarak(lat1, lon1, lat2, lon2) {
+            const R = 6371e3;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c; 
+        }
+
+        let videoStream;
+
+        function showSection(sectionId) {
+            try {
+                document.getElementById('mainMenu').style.display = 'none';
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById(sectionId).style.display = 'block';
+            } catch (error) {
+                console.error("Error menampilkan halaman:", error);
+            }
+        }
+
+        function goHome() {
+            try {
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById('mainMenu').style.display = 'grid';
+            } catch (error) {
+                console.error("Error kembali ke beranda:", error);
+            }
+        }
+
+        function mulaiPresensi() {
+            showSection('presensiSection');
+            startCamera();
+        }
+
+        function startCamera() {
+            const video = document.getElementById('kamera');
+            document.getElementById('kameraContainer').style.display = 'flex';
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    alert("Akses kamera ditolak atau perangkat kamera tidak ditemukan.");
+                });
+            } else {
+                alert("Browser tidak mendukung fitur kamera secara langsung.");
+            }
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function resetKamera() {
+            document.getElementById('hasilFotoContainer').style.display = 'none';
+            document.getElementById('kameraContainer').style.display = 'flex';
+        }
+
+        function ambilFoto() {
+            const pilihanFakultas = document.getElementById('pilihanFakultas').value;
+            
+            if (!pilihanFakultas) {
+                alert("Silakan pilih Fakultas terlebih dahulu sebelum merekam kehadiran!");
+                return;
+            }
+
+            try {
+                const video = document.getElementById('kamera');
+                const canvas = document.getElementById('kanvasFoto');
+                const context = canvas.getContext('2d');
+                
+                document.getElementById('kameraContainer').style.display = 'none';
+                document.getElementById('hasilFotoContainer').style.display = 'flex';
+
+                canvas.width = video.videoWidth || 300;
+                canvas.height = video.videoHeight || 200;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const statusBox = document.getElementById('statusLokasi');
+                statusBox.innerHTML = "Mengecek koordinat lokasi presensi...";
+                statusBox.style.backgroundColor = "var(--input-bg)";
+                statusBox.style.color = "var(--text-dark)";
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latUser = position.coords.latitude;
+                            const lonUser = position.coords.longitude;
+                            
+                            const targetGedung = KOORDINAT_FAKULTAS[pilihanFakultas];
+                            const jarak = hitungJarak(latUser, lonUser, targetGedung.lat, targetGedung.lon);
+
+                            let teksJarak = Math.round(jarak) + " meter";
+                            if (jarak > 1000) {
+                                teksJarak = (jarak / 1000).toFixed(2) + " kilometer";
+                            }
+
+                            if (jarak <= RADIUS_MAKSIMAL) {
+                                statusBox.style.backgroundColor = "rgba(76, 175, 80, 0.2)";
+                                statusBox.innerHTML = `✅ <strong>Validasi Berhasil!</strong><br>
+                                                       <span style="font-size: 0.9em; font-weight: normal;">
+                                                       Area Tervalidasi: <strong>${pilihanFakultas}</strong><br>
+                                                       (Jarak: ${teksJarak} dari pusat gedung)</span>`;
+                            } else {
+                                statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
+                                statusBox.innerHTML = `❌ <strong>Presensi Gagal!</strong><br>
+                                                       Kamu tidak berada di area ${pilihanFakultas} (Radius maksimal: ${RADIUS_MAKSIMAL}m).<br>
+                                                       <div class="debug-info">
+                                                            <strong>Lokasi kamu saat ini:</strong><br>
+                                                            Lat: ${latUser.toFixed(5)}, Lon: ${lonUser.toFixed(5)}<br>
+                                                            Jarak ke ${pilihanFakultas}: <strong>${teksJarak}</strong>.<br><br>
+                                                            <em>Silakan pastikan pilihan gedung/fakultas sudah tepat.</em>
+                                                       </div>`;
+                            }
+                        },
+                        (error) => {
+                            statusBox.style.backgroundColor = "rgba(244, 67, 54, 0.2)";
+                            statusBox.innerHTML = "❌ <strong>Gagal cek lokasi!</strong> Pastikan GPS pada perangkat dan browser menyala.";
+                        },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else {
+                    statusBox.innerHTML = "Browser kamu tidak mendukung deteksi lokasi (GPS).";
+                }
+            } catch (error) {
+                console.error("Error dalam proses foto:", error);
+            }
+        }
+    </script>
+</body>
+</html>
